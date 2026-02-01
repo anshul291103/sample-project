@@ -8,6 +8,7 @@ db = [
     {"id": 2, "Name": "Alina", "Department": "Software", "Role": "Senior Developer"}
 ]
 
+
 @app.route('/get/<int:id>', methods=['GET'])
 def get_record(id):
     value = None
@@ -19,6 +20,14 @@ def get_record(id):
         return jsonify(value), 200
     else:
         return jsonify({"error": f"No record with id {id}"}), 404
+    
+    
+@app.route('/employees', methods=['GET'])
+def get_records():
+    if not db:
+        return jsonify({"message": "No records added"}), 200
+    return jsonify({"records": db}), 200
+
 
 @app.route('/add', methods=['GET'])
 def add():
@@ -37,7 +46,8 @@ def add():
 
     return jsonify({"message": "Record added", "record": record}), 201
 
-@app.route('/employee', methods=['POST'])
+
+@app.route('/create-employee', methods=['POST'])
 def create_employee():
     global ID
     data = request.get_json(silent=True) or {}
